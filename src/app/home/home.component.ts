@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
           resp => {
             this.waiting = false;
             this.session.load(
-              new Session(resp.sessionId, resp.userId, this.ownerName, resp.authToken)
+              new Session(resp.sessionId, resp.userId.toString(), this.ownerName, resp.authToken)
             );
             this.router.navigate(['/sessions', resp.sessionId]);
           },
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
           resp => {
             this.waiting = false;
             this.session.load(
-              new Session(this.sessionId, resp.userId, resp.userName, resp.authToken)
+              new Session(this.sessionId, resp.userId.toString(), resp.userName, resp.authToken)
             );
             this.router.navigate(['/sessions', this.sessionId]);
           },
