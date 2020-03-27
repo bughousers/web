@@ -1,3 +1,4 @@
+
 interface ChessboardPositionObject {}
 
 type ChessboardFenString = string;
@@ -54,9 +55,13 @@ interface Chessboard {
     move1: string,
     ...args: string[]
   ): ChessboardPositionObject;
-  position(): ChessboardPositionObject;
+
   position(fen: "fen"): ChessboardFenString;
-  position(newPosition: ChessboardPosition, useAnimation?: boolean): void;
+  position(o:ChessboardFenString, useAnimation?:boolean):void;
+  position(o:ChessboardPositionObject, useAnimation?:boolean):void;
+
+  position(o:any, useAnimation?:boolean):void;
+
   orientation(): ChessboardOrientation;
   orientation(side: ChessboardOrientation | "flip"): void;
   resize(): void;
@@ -70,3 +75,5 @@ interface ChessboardFactory {
 }
 
 declare const Chessboard: ChessboardFactory;
+
+

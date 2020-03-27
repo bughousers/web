@@ -5,6 +5,7 @@ import { Component, OnInit, Input } from "@angular/core";
   templateUrl: "./chessboard.component.html",
   styleUrls: ["./chessboard.component.css"]
 })
+
 export class ChessboardComponent implements OnInit {
   @Input() board1?: boolean;
 
@@ -17,35 +18,32 @@ export class ChessboardComponent implements OnInit {
       dropOffBoard: "trash",
       sparePieces: true,
       orientation: "white",
-      onDrop: this.revDrop.bind(this),
+      onDrop: revDrop.bind(this),
       position: "start",
       pieceTheme: "../../assets/img/chesspieces/wikipedia/{piece}.png"
     });
   }
 
+}
 
-  revDrop(
-    source: string,
-    target: string,
-    piece: string,
-    newPos: ChessboardPosition,
-    oldPos: ChessboardPosition,
-    orientation: ChessboardOrientation
-  ): any {
-    //change this with response
-    if (true) {
-      let st = ''.concat(target, '-', source);
-      console.log(st);
-      let x = this.board?.move(st);
-      console.log(x);
-      console.log("uwu");
-      return;
-      //return "snapback";
-    } else {
-      return;
-    }
+
+function revDrop(
+  this: ChessboardComponent,
+  source: string,
+  target: string,
+  piece: string,
+  newPos: ChessboardPosition,
+  oldPos: ChessboardPosition,
+  orientation: ChessboardOrientation
+): any {
+  //change this with response
+  if (true) {
+    return 'snapback';
+  } else {
+    return;
   }
 }
+
 
 function preventDrop(event: DragEvent): void {
   if (typeof event.cancelable !== "boolean" || event.cancelable) {
