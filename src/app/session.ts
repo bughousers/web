@@ -1,20 +1,31 @@
-export interface Session {
-  id: string;
-  userId: string;
-  userName: string;
-  authToken: string;
+export class Session {
+
   data?: SessionData;
+
+  constructor(
+    public id: string,
+    public userId: number,
+    public userName: string,
+    public authToken: string
+  ) { }
 }
 
-export interface SessionData {
-  user_names: Map<string, string>;
-  score: Map<string, number>;
-  participants: Array<string>;
-  game_id: string;
+export class SessionData {
+
   game?: GameData;
+
+  constructor(
+    public userNames: Map<number, string>,
+    public score: Map<number, number>,
+    public participants: Array<number>,
+    public gameId: number
+  ) { }
 }
 
-export interface GameData {
-  active_participants: string[][];
-  board: string[];
+export class GameData {
+
+  constructor(
+    public activeParticipants: number[][],
+    board: string[]
+  ) { }
 }

@@ -1,10 +1,15 @@
-.home-form-field {
-  margin-top: 1em;
-  margin-left: 0.75em;
-  margin-right: 0.75em;
-}
-
 .home-button {
   margin-left: 0.75em;
   margin-bottom: 0.75em;
+}
+
+.home-form-field {
+  margin-left: 0.75em;
+  margin-right: 0.75em;
+  margin-top: 1em;
+}
+
+.home-waiting {
+  margin: auto;
+  margin-top: 2em;
 }

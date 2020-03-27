@@ -7,7 +7,7 @@ import { SessionComponent } from './session/session.component';
 // TODO: Handle incorrect paths too
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
-  { path: 'session/:sid', component: SessionComponent }
+  { path: 'sessions/:sid', component: SessionComponent }
 ];
 
 @NgModule({

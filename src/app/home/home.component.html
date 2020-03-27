@@ -1,8 +1,9 @@
-<div class="home-component">
+<div *ngIf="!waiting" class="home-form-container">
   <form #createForm="ngForm" (submit)="onSubmit('create')">
     <mat-form-field appearance="outline" class="home-form-field">
       <mat-label>Your name</mat-label>
-      <input matInput type="text" required maxlength="20" pattern="[0-9a-zA-Z]+" [(ngModel)]="userName" name="userName">
+      <input matInput type="text" required maxlength="20" pattern="[0-9a-zA-Z]+" [(ngModel)]="ownerName"
+        name="ownerName">
     </mat-form-field>
     <br>
     <button mat-raised-button type="submit" color="primary" [disabled]="!createForm.form.valid"
@@ -23,3 +24,4 @@
     <button mat-raised-button type="submit" [disabled]="!joinForm.form.valid" class="home-button">Join</button>
   </form>
 </div>
+<mat-spinner *ngIf="waiting" class="home-waiting"></mat-spinner>
