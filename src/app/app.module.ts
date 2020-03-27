@@ -5,10 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HomeComponent } from './home/home.component';
+import { SessionComponent } from './session/session.component';
+import { GameComponent } from './game/game.component';
+import { ChessboardComponent } from './chessboard/chessboard.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    SessionComponent,
+    GameComponent,
+    ChessboardComponent
   ],
   imports: [
     BrowserModule,
