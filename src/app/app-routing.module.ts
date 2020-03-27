@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
+import { HomeComponent } from './home/home.component';
+import { SessionComponent } from './session/session.component';
 
-const routes: Routes = [];
+// TODO: Handle incorrect paths too
+const routes: Routes = [
+  { path: '', pathMatch: 'full', component: HomeComponent },
+  { path: 'session/:sid', component: SessionComponent }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
