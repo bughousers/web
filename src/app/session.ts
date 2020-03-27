@@ -6,6 +6,10 @@ export class Session {
   game?: BehaviorSubject<Game>;
   board?: BehaviorSubject<string[]>;
 
+  is_owner(): boolean {
+    return this.userId === '0';
+  }
+
   constructor(
     public id: string,
     public userId: string,
