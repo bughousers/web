@@ -1,6 +1,6 @@
 interface ChessboardPositionObject { }
 
-interface ChessboardFenString extends string { }
+type ChessboardFenString = string;
 
 type ChessboardPosition = 'start' | ChessboardFenString | ChessboardPositionObject;
 
