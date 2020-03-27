@@ -1,31 +1,32 @@
+import { BehaviorSubject } from 'rxjs';
+
 export class Session {
 
-  data?: SessionData;
+  lobby?: BehaviorSubject<Lobby>;
+  game?: BehaviorSubject<Game>;
 
   constructor(
     public id: string,
-    public userId: number,
+    public userId: string,
     public userName: string,
     public authToken: string
   ) { }
 }
 
-export class SessionData {
-
-  game?: GameData;
+export class Lobby {
 
   constructor(
-    public userNames: Map<number, string>,
-    public score: Map<number, number>,
-    public participants: Array<number>,
-    public gameId: number
+    public userNames: Map<string, string>,
+    public score: Map<string, number>,
+    public participants: Array<string>,
+    public gameId: string
   ) { }
 }
 
-export class GameData {
+export class Game {
 
   constructor(
-    public activeParticipants: number[][],
-    board: string[]
+    public activeParticipants: string[][],
+    public board: string[]
   ) { }
 }
