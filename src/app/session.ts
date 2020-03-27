@@ -4,6 +4,7 @@ export class Session {
 
   lobby?: BehaviorSubject<Lobby>;
   game?: BehaviorSubject<Game>;
+  board?: BehaviorSubject<string[]>;
 
   constructor(
     public id: string,
@@ -26,7 +27,6 @@ export class Lobby {
 export class Game {
 
   constructor(
-    public activeParticipants: string[][],
-    public board: string[]
+    public activeParticipants: string[][]
   ) { }
 }
