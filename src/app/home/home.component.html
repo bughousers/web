@@ -1,1 +1,25 @@
-<p>home works!</p>
+<div class="home-component">
+  <form #createForm="ngForm" (submit)="onSubmit('create')">
+    <mat-form-field appearance="outline" class="home-form-field">
+      <mat-label>Your name</mat-label>
+      <input matInput type="text" required maxlength="20" pattern="[0-9a-zA-Z]+" [(ngModel)]="userName" name="userName">
+    </mat-form-field>
+    <br>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!createForm.form.valid"
+      class="home-button">Create</button>
+  </form>
+  <mat-divider></mat-divider>
+  <form #joinForm="ngForm" (submit)="onSubmit('join')">
+    <mat-form-field appearance="outline" class="home-form-field">
+      <mat-label>Session ID</mat-label>
+      <input matInput type="text" required minlength="4" maxlength="4" pattern="[0-9a-zA-Z]+" [(ngModel)]="sessionId"
+        name="sessionId">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="home-form-field">
+      <mat-label>Your name</mat-label>
+      <input matInput type="text" required maxlength="20" pattern="[0-9a-zA-Z]+" [(ngModel)]="userName" name="userName">
+    </mat-form-field>
+    <br>
+    <button mat-raised-button type="submit" [disabled]="!joinForm.form.valid" class="home-button">Join</button>
+  </form>
+</div>

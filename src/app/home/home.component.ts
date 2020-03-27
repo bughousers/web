@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  sessionId = '';
+  userName = '';
+
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  onSubmit(action: 'create' | 'join') {
+    switch (action) {
+      case 'create':
+      case 'join':
+    }
   }
 
 }
