@@ -1,7 +1,7 @@
 export function getCookie(name: string): string | undefined {
   const cookies = document.cookie
     .split(';')
-    .map(s => s.trimLeft())
+    .map(s => s.trimStart())
     .map(s => s.split('=', 2))
     .filter(c => c.length === 2);
   for (const c of cookies) {
