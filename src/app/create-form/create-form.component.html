@@ -1,8 +1,12 @@
-<form>
+<form #createForm="ngForm" (submit)="onSubmit()">
   <div class="form-group">
     <label for="create-form-name-input">Your name</label>
-    <input type="text" id="create-form-name-input" class="form-control">
+    <input type="text" pattern="[a-zA-Z ]+" required id="create-form-name-input" class="form-control" [(ngModel)]="name"
+      name="name">
     <small class="form-text text-muted">Must be alphabetic, can contain spaces.</small>
   </div>
-  <button type="submit" class="btn btn-primary">Create</button>
+  <button type="submit" class="btn btn-primary" [disabled]="!createForm.form.valid || waiting">
+    <span *ngIf="waiting" class="spinner-border spinner-border-sm"></span>
+    Create
+  </button>
 </form>
