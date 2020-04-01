@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -35,11 +35,11 @@ type MessageType =
 })
 export class SessionComponent implements OnDestroy, OnInit {
   sessionId = '';
-  userId = -1;
-  authToken = '';
-  session = new Session();
-  src?: EventSource;
-  sub?: Subscription;
+  private userId = -1;
+  private authToken = '';
+  private session = new BehaviorSubject(new Session());
+  private src?: EventSource;
+  private sub?: Subscription;
 
   constructor(private http: HttpClient) { }
 
@@ -65,7 +65,7 @@ export class SessionComponent implements OnDestroy, OnInit {
 
   onConnect(resp: Connected) {
     this.userId = resp.userId;
-    this.session = Session.parse(resp.session);
+    this.session.next(Session.parse(resp.session));
     this.src = new EventSource(`${environment.apiUrl}/v1/sessions/${this.sessionId}/sse`);
     this.sub = fromEvent<MessageEvent>(this.src, 'message')
       .pipe(map(ev => JSON.parse(ev.data)))
@@ -78,7 +78,7 @@ export class SessionComponent implements OnDestroy, OnInit {
     console.log(msg);
     switch (msg.type) {
       default:
-        this.session = Session.parse(msg.session);
+        this.session.next(Session.parse(msg.session));
         console.log(this.session);
         break;
     }
