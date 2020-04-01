@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6 col-lg-4 offset-md-3 offset-lg-4">
-    <app-create-form></app-create-form>
+    <app-create-form (create)="onCreate($event)"></app-create-form>
   </div>
 </div>
 <div class="row">
@@ -10,6 +10,6 @@
 </div>
 <div class="row">
   <div class="col-md-6 col-lg-4 offset-md-3 offset-lg-4">
-    <app-join-form></app-join-form>
+    <app-join-form (join)="onJoin($event)"></app-join-form>
   </div>
 </div>
