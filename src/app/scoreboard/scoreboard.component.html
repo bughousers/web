@@ -1,0 +1,16 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let id of participants">
+      <td>{{id}}</td>
+      <td>{{userNames.get(id)}}</td>
+      <td>{{getScore(id)}}</td>
+    </tr>
+  </tbody>
+</table>

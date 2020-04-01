@@ -12,6 +12,7 @@ import { GameComponent } from './game/game.component';
 import { HomeComponent } from './home/home.component';
 import { JoinFormComponent } from './join-form/join-form.component';
 import { ParticipantListComponent } from './participant-list/participant-list.component';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { SessionComponent } from './session/session.component';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { SessionComponent } from './session/session.component';
     CreateFormComponent,
     SessionComponent,
     ParticipantListComponent,
+    ScoreboardComponent,
     GameComponent,
     ChessboardComponent
   ],
