@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { setCookie } from '../cookies';
 import { CreateEvent } from '../create-form/create-form.component';
 import { JoinEvent } from '../join-form/join-form.component';
-import { SessionService } from '../session.service';
 
 @Component({
   selector: 'app-home',
