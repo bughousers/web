@@ -1,12 +1,17 @@
-<form>
+<form #joinForm="ngForm" (submit)="onSubmit()">
   <div class="form-group">
     <label for="join-form-session-id-input">Session ID</label>
-    <input type="text" id="join-form-session-id-input" class="form-control">
+    <input type="text" pattern="[a-zA-Z0-9]+" minlength="4" maxlength="4" required id="join-form-session-id-input"
+      class="form-control" [(ngModel)]="sessionId" name="sessionId">
   </div>
   <div class="form-group">
     <label for="join-form-name-input">Your name</label>
-    <input type="text" id="join-form-name-input" class="form-control">
+    <input type="text" pattern="[a-zA-Z ]+" required id="join-form-name-input" class="form-control" [(ngModel)]="name"
+      name="name">
     <small class="form-text text-muted">Must be alphabetic, can contain spaces.</small>
   </div>
-  <button type="submit" class="btn btn-secondary">Join</button>
+  <button type="submit" class="btn btn-secondary" [disabled]="!joinForm.form.valid || waiting">
+    <span *ngIf="waiting" class="spinner-border spinner-border-sm"></span>
+    Join
+  </button>
 </form>
