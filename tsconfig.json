@@ -10,13 +10,13 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2015",
     "lib": [
-      "es2018",
-      "dom"
+      "ESNext",
+      "DOM"
     ]
   },
   "angularCompilerOptions": {
