@@ -1,0 +1,8 @@
+<ul class="list-group">
+  <button *ngFor="let id of userIds" type="button" class="list-group-item list-group-item-action"
+    [class.active]="participating.get(id)" [disabled]="!owner || dirty" (click)="onClick(id)">
+    {{userNames.get(id)}}
+    <br>
+    <small class="text-faded">User ID: {{id}}</small>
+  </button>
+</ul>

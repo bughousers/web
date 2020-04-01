@@ -11,6 +11,7 @@ import { CreateFormComponent } from './create-form/create-form.component';
 import { GameComponent } from './game/game.component';
 import { HomeComponent } from './home/home.component';
 import { JoinFormComponent } from './join-form/join-form.component';
+import { ParticipantListComponent } from './participant-list/participant-list.component';
 import { SessionComponent } from './session/session.component';
 
 @NgModule({
@@ -20,6 +21,7 @@ import { SessionComponent } from './session/session.component';
     JoinFormComponent,
     CreateFormComponent,
     SessionComponent,
+    ParticipantListComponent,
     GameComponent,
     ChessboardComponent
   ],
@@ -28,7 +30,7 @@ import { SessionComponent } from './session/session.component';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    FontAwesomeModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

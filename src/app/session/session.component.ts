@@ -35,9 +35,9 @@ type MessageType =
 })
 export class SessionComponent implements OnDestroy, OnInit {
   sessionId = '';
-  private userId = -1;
+  userId = -1;
   private authToken = '';
-  private session = new BehaviorSubject(new Session());
+  session = new BehaviorSubject(new Session());
   private src?: EventSource;
   private sub?: Subscription;
 
@@ -82,6 +82,16 @@ export class SessionComponent implements OnDestroy, OnInit {
         console.log(this.session);
         break;
     }
+  }
+
+  onParticipants(participants: number[]) {
+    this.http.post(
+      `${environment.apiUrl}/v1/sessions/${this.sessionId}/participants`,
+      JSON.stringify({
+        authToken: this.authToken,
+        participants
+      }),
+      { responseType: 'arraybuffer' }).subscribe();
   }
 
 }

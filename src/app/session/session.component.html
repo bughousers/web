@@ -1,1 +1,2 @@
-<p>session works!</p>
+<app-participant-list [session]="session" [owner]="userId === 0" (participants)="onParticipants($event)">
+</app-participant-list>
