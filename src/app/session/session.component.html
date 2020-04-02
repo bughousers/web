@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col-4">
+  <div class="col-12 col-md-6 col-lg-5">
     <app-participant-list [session]="session" [owner]="userId === 0" (participants)="onParticipants($event)">
     </app-participant-list>
   </div>
-  <div class="col-8">
+  <div class="col-12 col-md-6 col-lg-7">
     <app-scoreboard [session]="session"></app-scoreboard>
   </div>
 </div>
