@@ -1,9 +1,13 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
 
 import {environment} from '../environments/environment';
+
+export interface Settings {
+  sessionId: string;
+  authToken: string;
+}
 
 export interface Created {
   sessionId: string;
@@ -14,9 +18,53 @@ export interface Joined {
   authToken: string;
 }
 
-export class SessionSettings {
-  constructor(public sessionId: string, public authToken: string) {
-  }
+interface Connected {
+  userId: number;
+  session: Session;
+}
+
+export interface Session {
+  users: Record<string, User>;
+  participants: number[];
+  game: GameState;
+}
+
+export interface User {
+  name: string;
+  score: number;
+}
+
+export type GameState = GameStateStarting | GameStateStarted | GameStateEnded;
+
+export interface GameStateStarting {
+  state: 'starting';
+}
+
+export interface GameStateStarted {
+  state: 'started';
+  data: {
+    id: number;
+    game: Game;
+  };
+}
+
+export interface GameStateEnded {
+  state: 'ended';
+  data: {
+    id: number;
+  };
+}
+
+export interface Game {
+  activeParticipants: [[number, number], [number, number]];
+  remainingTime: [[Duration, Duration], [Duration, Duration]];
+  board: [string, string];
+  pool: number[][];
+}
+
+export interface Duration {
+  secs: number;
+  nanos: number;
 }
 
 @Injectable({
@@ -40,7 +88,14 @@ export class NetworkingService {
     ).toPromise();
   }
 
-  async deployPiece(settings: SessionSettings, piece: string, pos: string): Promise<void> {
+  connectSession(settings: Settings): Promise<Connected> {
+    return this.http.post<Connected>(
+      `${environment.apiUrl}/v1/sessions/${settings.sessionId}`,
+      JSON.stringify({authToken: settings.authToken})
+    ).toPromise();
+  }
+
+  async deployPiece(settings: Settings, piece: string, pos: string): Promise<void> {
     await this.http.post(
       `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
       JSON.stringify({
@@ -52,7 +107,7 @@ export class NetworkingService {
     ).toPromise();
   }
 
-  async movePiece(settings: SessionSettings, move: string): Promise<void> {
+  async movePiece(settings: Settings, move: string): Promise<void> {
     await this.http.post(
       `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
       JSON.stringify({
@@ -64,7 +119,7 @@ export class NetworkingService {
     ).toPromise();
   }
 
-  async promotePiece(settings: SessionSettings, move: string, upgradeTo: string): Promise<void> {
+  async promotePiece(settings: Settings, move: string, upgradeTo: string): Promise<void> {
     await this.http.post(
       `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
       JSON.stringify({
