@@ -11,9 +11,6 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const elem = document.createElement('script');
-    elem.src = 'https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js';
-    document.head.append(elem);
   }
 
 }
