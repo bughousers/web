@@ -27,17 +27,17 @@ export class NetworkingService {
   constructor(private http: HttpClient) {
   }
 
-  createSession(ownerName: string): Observable<Created> {
+  createSession(ownerName: string): Promise<Created> {
     return this.http.post<Created>(`${environment.apiUrl}/v1/sessions`, JSON.stringify({
       ownerName
-    }));
+    })).toPromise();
   }
 
-  joinSession(sessionId: string, userName: string): Observable<Joined> {
+  joinSession(sessionId: string, userName: string): Promise<Joined> {
     return this.http.post<Joined>(
       `${environment.apiUrl}/v1/sessions/${sessionId}`,
       JSON.stringify({userName})
-    );
+    ).toPromise();
   }
 
   deployPiece(settings: SessionSettings, piece: string, pos: string): Promise<void> {
