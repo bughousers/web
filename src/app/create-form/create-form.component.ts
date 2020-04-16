@@ -1,17 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
-import { environment } from '../../environments/environment';
-
-interface Created {
-  sessionId: string;
-  userId: number;
-  authToken: string;
-}
-
-export class CreateEvent {
-  constructor(public sessionId: string, public authToken: string) { }
-}
+import {Ready} from '../home/home.component';
+import {NetworkingService} from '../networking.service';
 
 @Component({
   selector: 'app-create-form',
@@ -20,26 +10,27 @@ export class CreateEvent {
 })
 export class CreateFormComponent implements OnInit {
 
-  @Output() create = new EventEmitter<CreateEvent>();
+  @Output() create = new EventEmitter<Ready>();
 
   name = '';
   waiting = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private net: NetworkingService) {
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   onSubmit() {
     this.waiting = true;
-    const component = this;
-    this.http.post<Created>(`${environment.apiUrl}/v1/sessions`, JSON.stringify({
-      ownerName: this.name
-    })).subscribe({
-      next(resp) {
-        component.create.emit(new CreateEvent(resp.sessionId, resp.authToken));
-        component.waiting = false;
+    this.net.createSession(this.name).subscribe({
+      next: (resp) => {
+        this.create.emit(new Ready(resp.sessionId, resp.authToken));
+        this.waiting = false;
       },
-      error(err) { component.waiting = false; }
+      error: (err) => {
+        this.waiting = false;
+      }
     });
   }
 

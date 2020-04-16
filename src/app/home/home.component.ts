@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { setCookie } from '../cookies';
-import { CreateEvent } from '../create-form/create-form.component';
-import { JoinEvent } from '../join-form/join-form.component';
+import {setCookie} from '../cookies';
+
+export class Ready {
+  constructor(public sessionId: string, public authToken: string) {
+  }
+}
 
 @Component({
   selector: 'app-home',
@@ -12,15 +15,17 @@ import { JoinEvent } from '../join-form/join-form.component';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
-  onCreate(ev: CreateEvent) {
+  onCreate(ev: Ready) {
     this.connect(ev.sessionId, ev.authToken);
   }
 
-  onJoin(ev: JoinEvent) {
+  onJoin(ev: Ready) {
     this.connect(ev.sessionId, ev.authToken);
   }
 
