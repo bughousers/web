@@ -40,56 +40,41 @@ export class NetworkingService {
     ).toPromise();
   }
 
-  deployPiece(settings: SessionSettings, piece: string, pos: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.http.post(
-        `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
-        JSON.stringify({
-          type: 'deploy',
-          authToken: settings.authToken,
-          piece, pos
-        }),
-        {responseType: 'text'}
-      ).pipe(take(1)).subscribe({
-        next: _ => resolve(),
-        error: err => reject(err)
-      });
-    });
+  async deployPiece(settings: SessionSettings, piece: string, pos: string): Promise<void> {
+    await this.http.post(
+      `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
+      JSON.stringify({
+        type: 'deploy',
+        authToken: settings.authToken,
+        piece, pos
+      }),
+      {responseType: 'text'}
+    ).toPromise();
   }
 
-  movePiece(settings: SessionSettings, move: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.http.post(
-        `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
-        JSON.stringify({
-          type: 'move',
-          authToken: settings.authToken,
-          change: move
-        }),
-        {responseType: 'text'}
-      ).pipe(take(1)).subscribe({
-        next: _ => resolve(),
-        error: err => reject(err)
-      });
-    });
+  async movePiece(settings: SessionSettings, move: string): Promise<void> {
+    await this.http.post(
+      `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
+      JSON.stringify({
+        type: 'move',
+        authToken: settings.authToken,
+        change: move
+      }),
+      {responseType: 'text'}
+    ).toPromise();
   }
 
-  promotePiece(settings: SessionSettings, move: string, upgradeTo: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.http.post(
-        `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
-        JSON.stringify({
-          type: 'promote',
-          authToken: settings.authToken,
-          change: move,
-          upgradeTo
-        }),
-        {responseType: 'text'}
-      ).pipe(take(1)).subscribe({
-        next: _ => resolve(),
-        error: err => reject(err)
-      });
-    });
+  async promotePiece(settings: SessionSettings, move: string, upgradeTo: string): Promise<void> {
+    await this.http.post(
+      `${environment.apiUrl}/v1/sessions/${settings.sessionId}/games/_/board`,
+      JSON.stringify({
+        type: 'promote',
+        authToken: settings.authToken,
+        change: move,
+        upgradeTo
+      }),
+      {responseType: 'text'}
+    ).toPromise();
   }
 
 }
