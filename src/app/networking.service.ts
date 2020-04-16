@@ -20,21 +20,21 @@ export interface Joined {
 }
 
 export interface Connected {
-  userId: number;
+  userId: string;
   session: Session;
 }
 
 export type Message = MessageGameEnded | MessageOther;
 
 export interface MessageGameEnded {
-  causedBy: number;
+  causedBy: string;
   type: 'gameEnded';
-  winners: [number, number];
+  winners: [string, string];
   session: Session;
 }
 
 export interface MessageOther {
-  causedBy: number;
+  causedBy: string;
   type: 'gameStarted' | 'joined' | 'participantsChanged' | 'periodic' | 'pieceDeployed'
     | 'pieceMoved' | 'piecePromoted';
   session: Session;
@@ -42,7 +42,7 @@ export interface MessageOther {
 
 export interface Session {
   users: Record<string, User>;
-  participants: number[];
+  participants: string[];
   game: GameState;
 }
 
@@ -73,7 +73,7 @@ export interface GameStateEnded {
 }
 
 export interface Game {
-  activeParticipants: [[number, number], [number, number]];
+  activeParticipants: [[string, string], [string, string]];
   remainingTime: [[Duration, Duration], [Duration, Duration]];
   board: [string, string];
   pool: number[][];
@@ -121,6 +121,17 @@ export class NetworkingService {
       this.eventSources.set(settings.sessionId, eventSource);
     }
     return fromEvent<MessageEvent>(eventSource, 'message').pipe(map(ev => JSON.parse(ev.data)));
+  }
+
+  async changeParticipants(settings: Settings, participants: number[]): Promise<void> {
+    await this.http.post(
+      `${environment.apiUrl}/v1/sessions/${settings.sessionId}/participants`,
+      JSON.stringify({
+        authToken: settings.authToken,
+        participants
+      }),
+      {responseType: 'text'}
+    ).toPromise();
   }
 
   async deployPiece(settings: Settings, piece: string, pos: string): Promise<void> {

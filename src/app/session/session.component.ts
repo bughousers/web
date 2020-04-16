@@ -1,32 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, Subscription} from 'rxjs';
 
-import { environment } from '../../environments/environment';
-import { getCookie } from '../cookies';
-import { Session } from './session';
-
-interface Connected {
-  userId: number;
-  session: any;
-}
-
-interface Message {
-  causedBy: number;
-  type: MessageType;
-  session: any;
-}
-
-type MessageType =
-  'gameEnded'
-  | 'gameStarted'
-  | 'joined'
-  | 'participantsChanged'
-  | 'periodic'
-  | 'pieceDeployed'
-  | 'pieceMoved'
-  | 'piecePromoted';
+import {getCookie} from '../cookies';
+import {
+  Connected,
+  Message,
+  NetworkingService,
+  Session,
+  User
+} from '../networking.service';
 
 @Component({
   selector: 'app-session',
@@ -34,64 +16,60 @@ type MessageType =
   styleUrls: ['./session.component.css']
 })
 export class SessionComponent implements OnDestroy, OnInit {
-  sessionId = '';
-  userId = -1;
-  private authToken = '';
-  session = new BehaviorSubject(new Session());
-  private src?: EventSource;
-  private sub?: Subscription;
+  settings = {sessionId: '', authToken: ''};
+  userId = '';
 
-  constructor(private http: HttpClient) { }
+  session$ = new BehaviorSubject<Session>(
+    {users: {}, participants: [], game: {state: 'starting'}}
+  );
+
+  private subscription?: Subscription;
+
+  constructor(private net: NetworkingService) {
+  }
 
   ngOnInit(): void {
-    const sessionId = getCookie('sessionId');
-    const authToken = getCookie('authToken');
+    const sessionId = getCookie('sessionId') ?? '';
+    const authToken = getCookie('authToken') ?? '';
     console.log(sessionId);
     console.log(authToken);
-    this.sessionId = sessionId ?? '';
-    this.authToken = authToken ?? '';
-    this.http.post<Connected>(
-      `${environment.apiUrl}/v1/sessions/${sessionId}`, JSON.stringify({ authToken })
-    ).subscribe({
-      next: this.onConnect.bind(this),
-      error(err) { }
-    });
+    this.settings = {sessionId, authToken};
+    this.net.connectSession(this.settings).then(res => this.onConnect(res));
   }
 
   ngOnDestroy() {
-    this.src?.close();
-    this.sub?.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
-  onConnect(resp: Connected) {
-    this.userId = resp.userId;
-    this.session.next(Session.parse(resp.session));
-    this.src = new EventSource(`${environment.apiUrl}/v1/sessions/${this.sessionId}/sse`);
-    this.sub = fromEvent<MessageEvent>(this.src, 'message')
-      .pipe(map(ev => JSON.parse(ev.data)))
-      .subscribe({
-        next: this.onMessage.bind(this)
-      });
+  isOwner() {
+    return this.userId === '0';
+  }
+
+  onConnect(res: Connected) {
+    this.userId = res.userId;
+    this.update(res.session);
+    this.subscription = this.net.subscribe(this.settings).subscribe({
+      next: msg => this.onMessage(msg)
+    });
   }
 
   onMessage(msg: Message) {
     console.log(msg);
     switch (msg.type) {
       default:
-        this.session.next(Session.parse(msg.session));
-        console.log(this.session);
+        console.log(msg);
+        this.update(msg.session);
         break;
     }
   }
 
-  onParticipants(participants: number[]) {
-    this.http.post(
-      `${environment.apiUrl}/v1/sessions/${this.sessionId}/participants`,
-      JSON.stringify({
-        authToken: this.authToken,
-        participants
-      }),
-      { responseType: 'arraybuffer' }).subscribe();
+  update(session: Session) {
+    this.session$.next(session);
+  }
+
+  onParticipantsChange(participants: number[]) {
+    this.net.changeParticipants(this.settings, participants).then(() => {
+    });
   }
 
 }
