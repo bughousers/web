@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {fromEvent, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {environment} from '../environments/environment';
 
@@ -18,8 +19,24 @@ export interface Joined {
   authToken: string;
 }
 
-interface Connected {
+export interface Connected {
   userId: number;
+  session: Session;
+}
+
+export type Message = MessageGameEnded | MessageOther;
+
+export interface MessageGameEnded {
+  causedBy: number;
+  type: 'gameEnded';
+  winners: [number, number];
+  session: Session;
+}
+
+export interface MessageOther {
+  causedBy: number;
+  type: 'gameStarted' | 'joined' | 'participantsChanged' | 'periodic' | 'pieceDeployed'
+    | 'pieceMoved' | 'piecePromoted';
   session: Session;
 }
 
@@ -72,6 +89,8 @@ export interface Duration {
 })
 export class NetworkingService {
 
+  private eventSources: Map<string, EventSource> = new Map();
+
   constructor(private http: HttpClient) {
   }
 
@@ -93,6 +112,15 @@ export class NetworkingService {
       `${environment.apiUrl}/v1/sessions/${settings.sessionId}`,
       JSON.stringify({authToken: settings.authToken})
     ).toPromise();
+  }
+
+  subscribe(settings: Settings): Observable<Message> {
+    let eventSource = this.eventSources.get(settings.sessionId);
+    if (eventSource === undefined) {
+      eventSource = new EventSource(`${environment.apiUrl}/v1/sessions/${settings.sessionId}/sse`);
+      this.eventSources.set(settings.sessionId, eventSource);
+    }
+    return fromEvent<MessageEvent>(eventSource, 'message').pipe(map(ev => JSON.parse(ev.data)));
   }
 
   async deployPiece(settings: Settings, piece: string, pos: string): Promise<void> {
