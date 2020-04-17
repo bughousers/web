@@ -23,9 +23,14 @@ export class CreateFormComponent implements OnInit {
 
   onSubmit() {
     this.waiting = true;
-    this.net.createSession(this.name)
-      .then(res => this.create.emit(new Ready(res.sessionId, res.authToken)))
-      .finally(() => this.waiting = false);
+    this.net.create(this.name)
+      .subscribe({
+        next: res => {
+          this.create.emit(new Ready(res.sessionId, res.authToken));
+          this.waiting = false;
+        },
+        error: err => this.waiting = false
+      });
   }
 
 }

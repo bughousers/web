@@ -24,9 +24,14 @@ export class JoinFormComponent implements OnInit {
 
   onSubmit() {
     this.waiting = true;
-    this.net.joinSession(this.sessionId, this.name)
-      .then(res => this.join.emit(new Ready(this.sessionId, res.authToken)))
-      .finally(() => this.waiting = false);
+    this.net.join(this.sessionId, this.name)
+      .subscribe({
+        next: res => {
+          this.join.emit(new Ready(this.sessionId, res.authToken));
+          this.waiting = false;
+        },
+        error: err => this.waiting = false
+      });
   }
 
 }
