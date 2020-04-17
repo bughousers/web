@@ -4,84 +4,11 @@ import {fromEvent, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {environment} from '../environments/environment';
+import {Connected, Created, Event, Joined} from './networking';
 
-export interface Settings {
+interface Settings {
   sessionId: string;
   authToken: string;
-}
-
-export interface Created {
-  sessionId: string;
-  authToken: string;
-}
-
-export interface Joined {
-  authToken: string;
-}
-
-export interface Connected {
-  userId: string;
-  session: Session;
-}
-
-export type Message = MessageGameEnded | MessageOther;
-
-export interface MessageGameEnded {
-  causedBy: string;
-  type: 'gameEnded';
-  winners: [string, string];
-  session: Session;
-}
-
-export interface MessageOther {
-  causedBy: string;
-  type: 'gameStarted' | 'joined' | 'participantsChanged' | 'periodic' | 'pieceDeployed'
-    | 'pieceMoved' | 'piecePromoted';
-  session: Session;
-}
-
-export interface Session {
-  users: Record<string, User>;
-  participants: string[];
-  game: GameState;
-}
-
-export interface User {
-  name: string;
-  score: number;
-}
-
-export type GameState = GameStateStarting | GameStateStarted | GameStateEnded;
-
-export interface GameStateStarting {
-  state: 'starting';
-}
-
-export interface GameStateStarted {
-  state: 'started';
-  data: {
-    id: number;
-    game: Game;
-  };
-}
-
-export interface GameStateEnded {
-  state: 'ended';
-  data: {
-    id: number;
-  };
-}
-
-export interface Game {
-  activeParticipants: [[string, string], [string, string]];
-  remainingTime: [[Duration, Duration], [Duration, Duration]];
-  board: [string, string];
-  pool: number[][];
-}
-
-export interface Duration {
-  secs: number;
-  nanos: number;
 }
 
 @Injectable({
@@ -114,7 +41,7 @@ export class NetworkingService {
     ).toPromise();
   }
 
-  subscribe(settings: Settings): Observable<Message> {
+  subscribe(settings: Settings): Observable<Event> {
     let eventSource = this.eventSources.get(settings.sessionId);
     if (eventSource === undefined) {
       eventSource = new EventSource(`${environment.apiUrl}/v1/sessions/${settings.sessionId}/sse`);
