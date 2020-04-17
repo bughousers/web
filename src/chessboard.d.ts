@@ -47,6 +47,8 @@ interface ChessboardConfig {
 }
 
 interface Chessboard {
+  game_over(): any;
+  turn(): string;
   clear(useAnimation?: boolean): void;
   destroy(): void;
   fen(): ChessboardFenString;
@@ -69,7 +71,7 @@ interface Chessboard {
 }
 
 interface ChessboardFactory {
-  (containerElOrString: any, config: "start" | ChessboardConfig): Chessboard;
+  (containerElOrString: any, config?: "start" | ChessboardConfig): Chessboard;
   fenToObj(fen: string): ChessboardPositionObject | false;
   objToFen(obj: ChessboardPositionObject): ChessboardFenString | false;
 }
