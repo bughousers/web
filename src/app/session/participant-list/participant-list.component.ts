@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {BehaviorSubject, Subscription} from 'rxjs';
 
-import { Session } from '../session/session';
+import {Session} from '../../session';
 
 @Component({
   selector: 'app-participant-list',
@@ -20,10 +20,11 @@ export class ParticipantListComponent implements OnDestroy, OnInit {
   dirty = false;
   private sub?: Subscription;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
-    this.sub = this.session?.subscribe({ next: this.next.bind(this) });
+    this.sub = this.session?.subscribe({next: this.next.bind(this)});
   }
 
   ngOnDestroy() {
@@ -31,10 +32,10 @@ export class ParticipantListComponent implements OnDestroy, OnInit {
   }
 
   next(session: Session) {
-    this.userIds = Array.from(session.userNames.keys());
-    this.userNames = session.userNames;
-    this.participating = new Map(session.participants.map(n => [n, true]));
-    this.dirty = false;
+    // this.userIds = Array.from(session.userNames.keys());
+    // this.userNames = session.userNames;
+    // this.participating = new Map(session.participants.map(n => [n, true]));
+    // this.dirty = false;
   }
 
   onClick(userId: number) {

@@ -2,13 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Subscription} from 'rxjs';
 
 import {getCookie} from '../cookies';
-import {
-  Connected,
-  Message,
-  NetworkingService,
-  Session,
-  User
-} from '../networking.service';
+import {Connected, Event} from '../networking';
+import {NetworkingService} from '../networking.service';
+import {Session, User} from '../session';
 
 @Component({
   selector: 'app-session',
@@ -34,7 +30,7 @@ export class SessionComponent implements OnDestroy, OnInit {
     console.log(sessionId);
     console.log(authToken);
     this.settings = {sessionId, authToken};
-    this.net.connectSession(this.settings).then(res => this.onConnect(res));
+    this.net.connect(this.settings).subscribe(res => this.onConnect(res));
   }
 
   ngOnDestroy() {
@@ -48,17 +44,15 @@ export class SessionComponent implements OnDestroy, OnInit {
   onConnect(res: Connected) {
     this.userId = res.userId;
     this.update(res.session);
-    this.subscription = this.net.subscribe(this.settings).subscribe({
-      next: msg => this.onMessage(msg)
-    });
+    this.subscription = this.net.sse(this.settings).subscribe(ev => this.onEvent(ev));
   }
 
-  onMessage(msg: Message) {
-    console.log(msg);
-    switch (msg.type) {
+  onEvent(ev: Event) {
+    console.log(ev);
+    switch (ev.type) {
       default:
-        console.log(msg);
-        this.update(msg.session);
+        console.log(ev);
+        this.update(ev.session);
         break;
     }
   }
@@ -68,8 +62,7 @@ export class SessionComponent implements OnDestroy, OnInit {
   }
 
   onParticipantsChange(participants: number[]) {
-    this.net.changeParticipants(this.settings, participants).then(() => {
-    });
+    this.net.changeParticipants(this.settings, participants);
   }
 
 }
