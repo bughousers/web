@@ -1,9 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {fromEvent, Observable} from 'rxjs';
-import {ignoreElements, map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {ignoreElements} from 'rxjs/operators';
 
-import {environment} from '../environments/environment';
+import {environment} from '../../environments/environment';
 import {Connected, Created, Event, Joined} from './networking';
 
 interface Settings {
@@ -51,7 +51,7 @@ export class NetworkingService {
     return observable;
   }
 
-  changeParticipants(settings: Settings, participants: number[]): Observable<never> {
+  changeParticipants(settings: Settings, participants: string[]): Observable<never> {
     return this.http.post(`${environment.apiUrl}/v1/sessions/${settings.sessionId}/participants`,
       JSON.stringify({
         authToken: settings.authToken,
