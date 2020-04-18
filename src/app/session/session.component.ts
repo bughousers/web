@@ -2,9 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Subscription} from 'rxjs';
 
 import {getCookie} from '../cookies';
-import {Connected, Event} from '../networking';
-import {NetworkingService} from '../networking.service';
-import {Session, User} from '../session';
+import {Connected, Event} from '../networking/networking';
+import {NetworkingService} from '../networking/networking.service';
+import {Session} from '../networking/session';
 import {SessionService} from './session.service';
 
 @Component({

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 import {Ready} from '../home/home.component';
-import {NetworkingService} from '../networking.service';
+import {NetworkingService} from '../networking/networking.service';
 
 @Component({
   selector: 'app-create-form',
