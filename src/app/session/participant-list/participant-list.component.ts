@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
+import {User} from '../../networking/session';
 
-import {Session} from '../../session';
+import {SessionService, Users} from '../session.service';
 
 @Component({
   selector: 'app-participant-list',
@@ -10,41 +11,37 @@ import {Session} from '../../session';
 })
 export class ParticipantListComponent implements OnDestroy, OnInit {
 
-  @Input() session?: BehaviorSubject<Session>;
   @Input() owner = false;
-  @Output() participants = new EventEmitter<number[]>();
 
-  userIds: number[] = [];
-  userNames: Map<number, string> = new Map();
-  participating: Map<number, boolean> = new Map();
-  dirty = false;
-  private sub?: Subscription;
+  users$: Observable<Users>;
+  participants: readonly string[] = [];
+  private subscription?: Subscription;
 
-  constructor() {
+  onClick(userId: string) {
+    if (this.participants.includes(userId)) {
+      this.session.changeParticipants(this.participants.filter(id => id !== userId));
+    } else {
+      this.session.changeParticipants([userId, ...this.participants]);
+    }
+  }
+
+  entries(users: Readonly<Record<string, User>> | null): [string, User][] {
+    if (users) {
+      return Object.entries(users);
+    } else {
+      return [];
+    }
+  }
+
+  constructor(private session: SessionService) {
+    this.users$ = session.users$;
   }
 
   ngOnInit() {
-    this.sub = this.session?.subscribe({next: this.next.bind(this)});
+    this.subscription = this.session.participants$.subscribe(p => this.participants = p);
   }
 
   ngOnDestroy() {
-    this.sub?.unsubscribe();
+    this.subscription?.unsubscribe();
   }
-
-  next(session: Session) {
-    // this.userIds = Array.from(session.userNames.keys());
-    // this.userNames = session.userNames;
-    // this.participating = new Map(session.participants.map(n => [n, true]));
-    // this.dirty = false;
-  }
-
-  onClick(userId: number) {
-    this.dirty = true;
-    const old = this.participating.get(userId) ?? false;
-    this.participating.set(userId, !old);
-    this.participants.emit(
-      Array.from(this.participating.entries()).filter(([_, b]) => b).map(([n, _]) => n)
-    );
-  }
-
 }

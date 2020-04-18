@@ -1,16 +1,16 @@
 <table class="table">
   <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Score</th>
-    </tr>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Score</th>
+  </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let id of participants">
-      <td>{{id}}</td>
-      <td>{{userNames.get(id)}}</td>
-      <td>{{getScore(id)}}</td>
-    </tr>
+  <tbody *ngFor="let users of [users$ | async]">
+  <tr *ngFor="let id of (participants$ | async)">
+    <td>{{id}}</td>
+    <td>{{users[id].name}}</td>
+    <td>{{users[id].score}}</td>
+  </tr>
   </tbody>
 </table>

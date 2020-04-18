@@ -1,22 +1,26 @@
 import {OnDestroy} from '@angular/core';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 
 import {Connected, Event} from '../networking/networking';
 import {NetworkingService} from '../networking/networking.service';
 import {Session, User} from '../networking/session';
 
-function freeze<T>(t: T): Readonly<T> {
-  const frozen = Object.freeze(t);
-  Object.keys(frozen).forEach(key => freeze((frozen as any)[key]));
-  return frozen;
+function freeze(session: Session): Readonly<Session> {
+  Object.freeze(session.participants);
+  Object.freeze(session.users);
+  Object.keys(session.users).forEach(id => Object.freeze(session.users[id]));
+  Object.freeze(session.game);
+  return Object.freeze(session);
 }
+
+export type Users = Readonly<Record<string, Readonly<User>>>;
 
 export class SessionService implements OnDestroy {
 
   private settings = {sessionId: '', authToken: ''};
   private _userId = '';
-  private users = new Subject<Readonly<Record<string, User>>>();
-  private participants = new Subject<readonly string[]>();
+  private users = new BehaviorSubject<Users>({});
+  private participants = new BehaviorSubject<readonly string[]>([]);
 
   private subscription?: Subscription;
 
@@ -43,17 +47,17 @@ export class SessionService implements OnDestroy {
 
   onConnect(res: Connected) {
     this._userId = res.userId;
-    this.update(res.session);
+    this.update(freeze(res.session));
     this.subscription = this.net.sse(this.settings).subscribe(this.onEvent.bind(this));
   }
 
   onEvent(ev: Event) {
-    this.update(ev.session);
+    this.update(freeze(ev.session));
   }
 
   update(session: Session) {
-    this.users.next(freeze(session.users));
-    this.participants.next(freeze(session.participants));
+    this.users.next(session.users);
+    this.participants.next(session.participants);
   }
 
   changeParticipants(participants: string[]) {
