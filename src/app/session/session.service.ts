@@ -21,6 +21,8 @@ export class SessionService implements OnDestroy {
   private _userId = '';
   private users = new BehaviorSubject<UserMap>(new Map());
   private participants = new BehaviorSubject<readonly string[]>([]);
+  private board = new BehaviorSubject<[string, string]>(['', '']);
+  private pool = new BehaviorSubject<number[][]>([]);
 
   private subscription?: Subscription;
 
@@ -38,6 +40,14 @@ export class SessionService implements OnDestroy {
 
   get participants$(): Observable<readonly string[]> {
     return this.participants.asObservable();
+  }
+
+  get board$(): Observable<[string, string]> {
+    return this.board.asObservable();
+  }
+
+  get pool$(): Observable<number[][]> {
+    return this.pool.asObservable();
   }
 
   connect(sessionId: string, authToken: string) {
@@ -58,6 +68,17 @@ export class SessionService implements OnDestroy {
   update(session: Session) {
     this.users.next(new Map(Object.entries(session.users)));
     this.participants.next(session.participants);
+    const game = session.game;
+    switch (game.state) {
+      case 'ended':
+        this.board.next(['', '']);
+        this.pool.next([]);
+        break;
+      case 'started':
+        this.board.next(game.data.game.board);
+        this.pool.next(game.data.game.pool);
+        break;
+    }
   }
 
   changeParticipants(participants: string[]) {
