@@ -16,8 +16,6 @@ interface Settings {
 })
 export class NetworkingService {
 
-  private eventSources: Map<string, EventSource> = new Map();
-
   constructor(private http: HttpClient) {
   }
 
@@ -40,12 +38,17 @@ export class NetworkingService {
   }
 
   sse(settings: Settings): Observable<Event> {
-    let eventSource = this.eventSources.get(settings.sessionId);
-    if (eventSource === undefined) {
-      eventSource = new EventSource(`${environment.apiUrl}/v1/sessions/${settings.sessionId}/sse`);
-      this.eventSources.set(settings.sessionId, eventSource);
-    }
-    return fromEvent<MessageEvent>(eventSource, 'message').pipe(map(ev => JSON.parse(ev.data)));
+    const observable = new Observable<Event>(subscriber => {
+      const eventSource =
+        new EventSource(`${environment.apiUrl}/v1/sessions/${settings.sessionId}/sse`);
+      eventSource.addEventListener('message', ev => subscriber.next(JSON.parse(ev.data)));
+      eventSource.addEventListener('error', ev => subscriber.error(ev));
+
+      return () => {
+        eventSource.close();
+      };
+    });
+    return observable;
   }
 
   changeParticipants(settings: Settings, participants: number[]): Observable<never> {
