@@ -5,11 +5,13 @@ import {getCookie} from '../cookies';
 import {Connected, Event} from '../networking';
 import {NetworkingService} from '../networking.service';
 import {Session, User} from '../session';
+import {SessionService} from './session.service';
 
 @Component({
   selector: 'app-session',
   templateUrl: './session.component.html',
-  styleUrls: ['./session.component.css']
+  styleUrls: ['./session.component.css'],
+  providers: [SessionService]
 })
 export class SessionComponent implements OnDestroy, OnInit {
   settings = {sessionId: '', authToken: ''};
