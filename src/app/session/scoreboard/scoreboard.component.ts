@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 
-import {SessionService, Users} from '../session.service';
+import {SessionService, UserMap} from '../session.service';
 
 @Component({
   selector: 'app-scoreboard',
@@ -10,7 +10,7 @@ import {SessionService, Users} from '../session.service';
 })
 export class ScoreboardComponent implements OnInit {
 
-  users$: Observable<Users>;
+  users$: Observable<UserMap>;
   participants$: Observable<readonly string[]>;
 
   constructor(private session: SessionService) {

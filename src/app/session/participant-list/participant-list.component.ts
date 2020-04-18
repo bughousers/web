@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {User} from '../../networking/session';
 
-import {SessionService, Users} from '../session.service';
+import {SessionService, UserMap} from '../session.service';
 
 @Component({
   selector: 'app-participant-list',
@@ -13,7 +13,7 @@ export class ParticipantListComponent implements OnDestroy, OnInit {
 
   @Input() owner = false;
 
-  users$: Observable<Users>;
+  users$: Observable<UserMap>;
   participants: readonly string[] = [];
   private subscription?: Subscription;
 
@@ -25,12 +25,8 @@ export class ParticipantListComponent implements OnDestroy, OnInit {
     }
   }
 
-  entries(users: Readonly<Record<string, User>> | null): [string, User][] {
-    if (users) {
-      return Object.entries(users);
-    } else {
-      return [];
-    }
+  entries<K, V>(map: ReadonlyMap<K, V> | null): [K, V][] {
+    return Array.from(map?.entries() ?? []);
   }
 
   constructor(private session: SessionService) {

@@ -9,8 +9,8 @@
   <tbody *ngFor="let users of [users$ | async]">
   <tr *ngFor="let id of (participants$ | async)">
     <td>{{id}}</td>
-    <td>{{users[id].name}}</td>
-    <td>{{users[id].score}}</td>
+    <td>{{users.get(id).name}}</td>
+    <td>{{users.get(id).score}}</td>
   </tr>
   </tbody>
 </table>

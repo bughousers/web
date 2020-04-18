@@ -13,13 +13,13 @@ function freeze(session: Session): Readonly<Session> {
   return Object.freeze(session);
 }
 
-export type Users = Readonly<Record<string, Readonly<User>>>;
+export type UserMap = ReadonlyMap<string, Readonly<User>>;
 
 export class SessionService implements OnDestroy {
 
   private settings = {sessionId: '', authToken: ''};
   private _userId = '';
-  private users = new BehaviorSubject<Users>({});
+  private users = new BehaviorSubject<UserMap>(new Map());
   private participants = new BehaviorSubject<readonly string[]>([]);
 
   private subscription?: Subscription;
@@ -32,7 +32,7 @@ export class SessionService implements OnDestroy {
     return this._userId;
   }
 
-  get users$(): Observable<Readonly<Record<string, User>>> {
+  get users$(): Observable<UserMap> {
     return this.users.asObservable();
   }
 
@@ -56,7 +56,7 @@ export class SessionService implements OnDestroy {
   }
 
   update(session: Session) {
-    this.users.next(session.users);
+    this.users.next(new Map(Object.entries(session.users)));
     this.participants.next(session.participants);
   }
 
