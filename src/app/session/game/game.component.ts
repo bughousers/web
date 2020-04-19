@@ -7,7 +7,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class GameComponent implements OnInit {
   localplayercolor: "white" | "black" = "white";
-  localplayerboard: number = 2;
+  localplayerboard: 1 | 2 = 2;
   playernames: Array<string> = [
     "whitestub1",
     "blackstub1",
@@ -24,13 +24,13 @@ export class GameComponent implements OnInit {
   //generate the inputs for the chessboards dynamically
   getBoard1(left: boolean): boolean {
     if (left) {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return true;
       } else {
         return false;
       }
     } else {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return false;
       } else {
         return true;
@@ -40,13 +40,13 @@ export class GameComponent implements OnInit {
 
   getBoardid(left: boolean): number {
     if (left) {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return 1;
       } else {
         return 2;
       }
     } else {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return 2;
       } else {
         return 1;
@@ -56,13 +56,13 @@ export class GameComponent implements OnInit {
 
   getBoardWhiteName(left: boolean): string {
     if (left) {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return this.playernames[0];
       } else {
         return this.playernames[2];
       }
     } else {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return this.playernames[2];
       } else {
         return this.playernames[0];
@@ -72,13 +72,13 @@ export class GameComponent implements OnInit {
 
   getBoardBlackName(left: boolean): string {
     if (left) {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return this.playernames[1];
       } else {
         return this.playernames[3];
       }
     } else {
-      if (this.localplayerboard == 1) {
+      if (this.localplayerboard === 1) {
         return this.playernames[3];
       } else {
         return this.playernames[1];
@@ -95,7 +95,7 @@ export class GameComponent implements OnInit {
   }
 
   reversePlayerColor(): string {
-    if (this.localplayercolor == "white") {
+    if (this.localplayercolor === "white") {
       return "black";
     } else {
       return "white";
