@@ -10,7 +10,7 @@ type ChessboardPosition =
 
 type ChessboardCallback = (...args: any[]) => any;
 
-type ChessboardOrientation = "white" | "black";
+type ChessboardOrientation = "white" | "black" | string;
 
 type ChessboardSpeed = number | "slow" | "fast";
 

@@ -1,3 +1,21 @@
-<p>Game dechu</p>
-<app-chessboard [board1]="true" [boardid]="'board1'"></app-chessboard>
-<app-chessboard [board1]="false" [boardid]="'board2'"></app-chessboard>
+<div class="container">
+  <div style="float: left;">
+    <app-chessboard
+      [board1]="true"
+      [boardid]="'board1'"
+      [white]="'stub-white-1'"
+      [black]="'stub-black-1'"
+      [orient]="'white'"
+    ></app-chessboard>
+  </div>
+  <div style="float: right;">
+    <app-chessboard
+      [board1]="false"
+      [boardid]="'board2'"
+      [white]="'stub-white-2'"
+      [black]="'stub-black-2'"
+      [orient]="'black'"
+    ></app-chessboard>
+  </div>
+  <div style="clear: both; font-size: 1px;"></div>
+</div>

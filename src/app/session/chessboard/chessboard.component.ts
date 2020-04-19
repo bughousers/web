@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, AfterViewInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from "@angular/core";
+import { Session } from "protractor";
+import { SessionService } from "../session.service";
 
 @Component({
   selector: "app-chessboard",
@@ -10,26 +18,66 @@ export class ChessboardComponent implements AfterViewInit {
   @Input() white?: string;
   @Input() black?: string;
   @Input() boardid: string = "board0";
+  @Input() orient?: string;
   board?: Chessboard;
   poolWhite: number[] = [1, 0, 0, 0, 0];
-  poolBlack: number[] = [1, 0, 0, 0, 0];
+  poolBlack: number[] = [2, 0, 0, 0, 0];
   whiteturn: boolean = true;
+  poolTop: number[] = this.poolBlack;
+  poolLow: number[] = this.poolWhite;
 
-  constructor() {
-  }
+  constructor(
+    //private serv: SessionService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
+    console.log(this.orient);
+    this.poolTop = this.orient === "white" ? this.poolBlack : this.poolWhite;
+    this.poolLow = this.orient === "white" ? this.poolWhite : this.poolBlack;
 
     this.board = Chessboard(this.boardid, {
       draggable: true,
       sparePieces: true,
-      orientation: "white",
+      orientation: this.orient,
       dropOffBoard: "snapback",
       onDrop: this.revDrop.bind(this),
       onDragStart: this.onDragStart.bind(this),
       position: "start",
       pieceTheme: "../../assets/img/chesspieces/wikipedia/{piece}.png",
     });
+  }
+
+  getTop(): string {
+    if (this.orient === "white") {
+      if (this.black === undefined) {
+        return "stub";
+      } else {
+        return this.black;
+      }
+    } else {
+      if (this.white === undefined) {
+        return "stub";
+      } else {
+        return this.white;
+      }
+    }
+  }
+
+  getLow() {
+    if (this.orient === "black") {
+      if (this.black === undefined) {
+        return "stub";
+      } else {
+        return this.black;
+      }
+    } else {
+      if (this.white === undefined) {
+        return "stub";
+      } else {
+        return this.white;
+      }
+    }
   }
 
   onDragStart(source: any, piece: any, position: any, orientation: any): any {

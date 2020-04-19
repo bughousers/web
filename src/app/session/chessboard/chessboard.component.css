@@ -1,0 +1,37 @@
+.numberCircle {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+
+  background: #cd5c5c;
+  border: 2px solid #db7093;
+  color: #fff;
+  text-align: center;
+
+  font: 16px Arial, sans-serif;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.row {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.chessboard {
+  margin-left: 50px;
+}
+
+.userName span{
+  background: #afeeee;
+  color: #fff;
+  text-align: center;
+
+  font: 24px Arial, sans-serif;
+  margin: 0 auto;
+}
+
+h1,h3 {
+  text-align:center;
+}

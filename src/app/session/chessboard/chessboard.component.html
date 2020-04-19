@@ -1,3 +1,28 @@
-<p>"{{boardid}}","{{ board1 }}"</p>
+<div class="container">
+  <h3>
+    <div class="userName">
+      <span>{{ getTop() }}</span>
+    </div>
 
-<div id="{{boardid}}" style="width: 400px;"></div>
+    <div class="row" style="width: 320px;">
+      <div class="numberCircle">{{ poolTop[4] }}</div>
+      <div class="numberCircle">{{ poolTop[1] }}</div>
+      <div class="numberCircle">{{ poolTop[3] }}</div>
+      <div class="numberCircle">{{ poolTop[2] }}</div>
+      <div class="numberCircle">{{ poolTop[0] }}</div>
+    </div>
+
+    <div id="{{ boardid }}" style="width: 500px;"></div>
+    <div class="userName">
+      <span>{{ getLow() }}</span>
+    </div>
+
+    <div class="row" style="width: 320px;">
+      <div class="numberCircle">{{ poolLow[4] }}</div>
+      <div class="numberCircle">{{ poolLow[1] }}</div>
+      <div class="numberCircle">{{ poolLow[3] }}</div>
+      <div class="numberCircle">{{ poolLow[2] }}</div>
+      <div class="numberCircle">{{ poolLow[0] }}</div>
+    </div>
+  </h3>
+</div>
