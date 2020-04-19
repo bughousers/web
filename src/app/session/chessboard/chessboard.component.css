@@ -14,16 +14,12 @@
   display: inline-block;
 }
 
-.row {
-  width: 100%;
-  margin: 0 auto;
-}
 
 .chessboard {
   margin-left: 50px;
 }
 
-.userName span{
+.userName {
   background: #afeeee;
   color: #fff;
   text-align: center;
@@ -32,6 +28,48 @@
   margin: 0 auto;
 }
 
-h1,h3 {
-  text-align:center;
+h1,
+h3 {
+  text-align: center;
 }
+
+.wrapperclock_of1{
+  width: 300px;
+  overflow:hidden;
+  transform:rotate(-90deg);
+}
+
+.wrapperclock_of2{
+  width: 300px;
+  overflow:hidden;
+  transform:rotate(90deg);
+}
+
+.clockfirst {
+  background: #e7d6fa;
+  width: 150px;
+  height: 100px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 100px;
+  font-size: xxx-large;
+  transform: rotate(0deg);
+  border-right: 3px solid #6878a0;
+  float:left;
+
+}
+
+.clocksecond {
+  background: #e7d6fa;
+  width: 150px;
+  height: 100px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 100px;
+  font-size: xxx-large;
+  transform: rotate(0deg);
+  border-left: 3px solid #6878a0;
+  float:left;
+
+}
+

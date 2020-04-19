@@ -101,4 +101,14 @@ export class GameComponent implements OnInit {
       return "white";
     }
   }
+
+  //chessboardjs doesnt work with boolean
+  getBlock(left:boolean):string{
+    if (left){
+      return "false";
+    }else{
+      return "true";
+    }
+  }
+
 }

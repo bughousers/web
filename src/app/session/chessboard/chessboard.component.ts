@@ -19,12 +19,14 @@ export class ChessboardComponent implements AfterViewInit {
   @Input() black?: string;
   @Input() boardid: string = "board0";
   @Input() orient?: string;
+  @Input() blocked?: string;
   board?: Chessboard;
   poolWhite: number[] = [1, 0, 0, 0, 0];
   poolBlack: number[] = [2, 0, 0, 0, 0];
   whiteturn: boolean = true;
   poolTop: number[] = this.poolBlack;
   poolLow: number[] = this.poolWhite;
+  movedone = false;
 
   constructor(
     //private serv: SessionService,
@@ -84,6 +86,29 @@ export class ChessboardComponent implements AfterViewInit {
     /*if (this.board?.game_over()) {
       return false;
     }*/
+
+    if (this.blocked === undefined) {
+      console.log("shouldnt happen");
+      console.log(this.blocked);
+    } else {
+      console.log(this.blocked);
+    }
+
+    if (this.movedone) {
+      return false;
+    }
+
+    if (
+      (this.orient === "white" && piece.search(/^b/) !== -1) ||
+      (this.orient === "black" && piece.search(/^w/) !== -1)
+    ) {
+      return false;
+    }
+
+    if (this.blocked === "true") {
+      return false;
+    }
+
     if (this.board === undefined) {
       console.log("board undefined, wtf1?");
     }
@@ -98,7 +123,7 @@ export class ChessboardComponent implements AfterViewInit {
     ) {
       return false;
     } else {
-      if (!this.checkMoveFromPool(source, piece, false)) {
+      if (source === "spare" && !this.checkMoveFromPool(source, piece, false)) {
         return false;
       } else {
         return;
@@ -115,17 +140,23 @@ export class ChessboardComponent implements AfterViewInit {
     oldPos: ChessboardPosition,
     orientation: ChessboardOrientation
   ): any {
-    if (!this.checkMoveFromPool(source, piece, true)) {
-      return "snapback";
+    //if i drop outside the board it decreases the coutner but does nothing
+    if (target === "offboard") {
+      if (source === "spare" && !this.checkMoveFromPool(source, piece, false)) {
+        return "snapback";
+      } else {
+        return "snapback";
+      }
     } else {
-      return;
+      if (source === "spare" && !this.checkMoveFromPool(source, piece, true)) {
+        return "snapback";
+      } else {
+        this.movedone = true;
+        return;
+      }
     }
-
-    //always let it move
-    return;
   }
 
-  //return true if not from pool
   checkMoveFromPool(source: string, piece: string, update: boolean): boolean {
     if (source === "spare") {
       //return this.checkMoveFromPool(piece);
@@ -240,8 +271,6 @@ export class ChessboardComponent implements AfterViewInit {
           return false;
         }
       }
-    } else {
-      return true;
     }
     return false;
   }
