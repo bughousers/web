@@ -1,20 +1,20 @@
 <div class="container">
   <div style="float: left;">
     <app-chessboard
-      [board1]="true"
-      [boardid]="'board1'"
-      [white]="'stub-white-1'"
-      [black]="'stub-black-1'"
-      [orient]="'white'"
+      board1={{getBoard1(true)}}
+      boardid={{getBoardid(true)}}
+      white={{getBoardWhiteName(true)}}
+      black={{getBoardBlackName(true)}}
+      orient={{getOrient(true)}}
     ></app-chessboard>
   </div>
   <div style="float: right;">
     <app-chessboard
-      [board1]="false"
-      [boardid]="'board2'"
-      [white]="'stub-white-2'"
-      [black]="'stub-black-2'"
-      [orient]="'black'"
+      board1={{getBoard1(false)}}
+      boardid={{getBoardid(false)}}
+      white={{getBoardWhiteName(false)}}
+      black={{getBoardBlackName(false)}}
+      orient={{getOrient(false)}}
     ></app-chessboard>
   </div>
   <div style="clear: both; font-size: 1px;"></div>
