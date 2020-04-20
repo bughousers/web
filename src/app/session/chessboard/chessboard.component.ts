@@ -5,7 +5,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
 } from "@angular/core";
-import { Session } from "protractor";
+
 import { SessionService } from "../session.service";
 
 @Component({
@@ -29,7 +29,7 @@ export class ChessboardComponent implements AfterViewInit {
   movedone = false;
 
   constructor(
-    //private serv: SessionService,
+    private serv: SessionService,
     private cdr: ChangeDetectorRef
   ) {}
 
